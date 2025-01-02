@@ -1,0 +1,16 @@
+#root {
+  max-width: 450px;
+  margin: 0 auto;
+  text-align: center;
+  @apply text-white min-h-screen;
+}
+
+/* HTML: <div class="curved-edge"></div> */
+.curved-edge {
+  --c: 80px; /* control the curvature (works with percentage) */
+  height: 250px;
+  aspect-ratio: 1;
+  width: 100%;
+  /* you can also update the 60%  */
+  mask: radial-gradient(85% var(--c) at 50% var(--c),#0000 calc(100% - 2px),#000) 0 calc(-1*var(--c));
+}

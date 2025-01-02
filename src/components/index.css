@@ -1,0 +1,65 @@
+/* From Uiverse.io by satyamchaudharydev */ 
+.card {
+  --primary-clr: #f2ecdd;
+  width: 100%;
+  /* height: 150px; */
+  border-radius: 10px;
+ }
+ 
+ .card {
+  color: #0b0b0b;
+  display: grid;
+  cursor: pointer;
+  grid-template-rows: 50px 1fr;
+ }
+ 
+ .card:hover .img-section {
+  transform: translateY(0);
+ }
+ 
+ .card-desc {
+  border-radius: 10px;
+  padding: 15px;
+  position: relative;
+  top: -10px;
+  display: grid;
+  gap: 10px;
+  background: var(--primary-clr);
+ }
+ 
+ .card-time {
+  font-size: 1.7em;
+  font-weight: 500;
+ }
+ 
+ .img-section {
+  transition: 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  background: #0b0b0b;
+  transform: translateY(3em);
+ }
+ 
+ .card-header {
+  display: flex;
+  align-items: center;
+  width: 100%;
+ }
+ 
+ .card-title {
+  flex: 1;
+  font-size: 0.9em;
+  font-weight: 500;
+ }
+ 
+ .card-menu {
+  display: flex;
+  gap: 4px;
+  margin-inline: auto;
+ }
+ 
+ .card .recent {
+  line-height: 0;
+  font-size: 0.8em;
+ }
+ 
