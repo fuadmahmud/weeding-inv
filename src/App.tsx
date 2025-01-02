@@ -28,7 +28,7 @@ import {
 
 function App() {
   const [isSliding, setSliding] = useState(false);
-  const [showBank, setShowBank] = useState(false);
+  // const [showBank, setShowBank] = useState(false);
   const targetDate = new Date('2025-03-31');
   const formattedDate = format(targetDate, 'EEEE dd MMMM yyyy', { locale: id });
   const calculateTimeLeft = () => {
