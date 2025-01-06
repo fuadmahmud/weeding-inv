@@ -5,7 +5,7 @@ export default {
   theme: {
     extend: {
       backgroundImage: {
-        'front-image': "url('@/assets/front.jpg')",
+        'front-image': "url('@/assets/front.webp')",
         'heroes-image': "url('@/assets/heroes.jpg')",
         'braid-image': "url('@/assets/braid.jpg')",
         'groom-image': "url('@/assets/groom.jpg')"

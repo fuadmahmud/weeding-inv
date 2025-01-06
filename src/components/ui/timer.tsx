@@ -68,7 +68,7 @@ const FlipCard: React.FC<FlipCardProps> = ({ dataAttribute, value }) => {
   );
 };
 
-const Countdown: React.FC<{ targetDate: string }> = ({ targetDate }) => {
+const Countdown: React.FC<{ targetDate: Date }> = ({ targetDate }) => {
   const [timeLeft, setTimeLeft] = useState<TimeLeft>({
     days: 0,
     hours: 0,
@@ -77,7 +77,7 @@ const Countdown: React.FC<{ targetDate: string }> = ({ targetDate }) => {
   });
 
   useEffect(() => {
-    const countToDate = new Date(targetDate);
+    const countToDate = targetDate;
     countToDate.setHours(countToDate.getHours() + 24);
 
     const interval = setInterval(() => {
