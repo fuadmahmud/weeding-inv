@@ -1,6 +1,5 @@
 import '../index.css';
 import { Copy } from 'lucide-react';
-import { useCopyToClipboard } from 'usehooks-ts';
 import BRILogo from '@/assets/bri.svg?react';
 import BSILogo from '@/assets/bsi.svg?react';
 import GopayLogo from '@/assets/gopay.svg?react';
