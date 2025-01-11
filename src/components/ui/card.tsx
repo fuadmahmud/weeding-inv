@@ -44,10 +44,10 @@ export default function Card({
       </div>
       <div className="number-container">
         <label className="input-label" htmlFor="cardNumber">
-          CARD NUMBER
+          {type === 'gopay' ? 'PHONE' : 'CARD'} NUMBER
         </label>
         <div className="flex flex-row gap-3 items-center justify-center">
-          <span className="inputstyle">{number}</span>
+          <span className="inputstyle !h-auto">{number}</span>
           <Copy
             role="button"
             onClick={handleCopy}

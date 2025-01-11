@@ -1,24 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import './App.css';
 import { Button } from './components/ui/button';
-import {
-  MailOpen,
-  Instagram,
-  MapPin,
-  Gift,
-  CalendarHeart,
-  Play,
-  Pause,
-} from 'lucide-react';
-import Braid from '@/assets/braid.jpg';
-import Groom from '@/assets/groom.jpg';
-import Width1 from '@/assets/width-1.jpg';
-import Width2 from '@/assets/width-2.jpg';
-import Width3 from '@/assets/width-3.jpg';
-import Height1 from '@/assets/height-1.jpg';
-import Height2 from '@/assets/height-2.jpg';
-import Height3 from '@/assets/height-3.jpg';
-import Height4 from '@/assets/height-4.jpg';
+import { MailOpen, Instagram, MapPin, Gift, Play, Pause } from 'lucide-react';
+import Braid from '@/assets/braid.webp';
+import Groom from '@/assets/groom.webp';
 import Closing from '@/assets/closing.jpg';
 import Card from './components/ui/card';
 import { format } from 'date-fns';
@@ -37,12 +22,9 @@ import BackgroundMusic from '@/assets/backsound.mp3';
 import Timer from './components/ui/timer';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-
-const IMAGE_ROW = [
-  { alt: 'row-1', src: Width1 },
-  { alt: 'row-2', src: Width2 },
-  { alt: 'row-3', src: Width3 },
-];
+import Gallery from './components/ui/gallery';
+import Heroes from './components/ui/heroes';
+import OurStory from '@/assets/our-story.webp';
 
 const ACCOUNTS = [
   {
@@ -136,29 +118,7 @@ function App() {
         `}
       >
         {/* Heroes */}
-        <div className="bg-heroes-image bg-no-repeat bg-cover bg-center h-screen w-full flex flex-col justify-end">
-          <div className="h-1/2 bg-gradient-to-t from-white to-50%">
-            <div className="p-4 text-left text-gold flex flex-col gap-4">
-              <p>The Weeding Of</p>
-              <p className="text-playwrite text-2xl">Gunawan & Novita</p>
-              <p className="text-sm">
-                We invite you to join and celebrate our weeding
-              </p>
-              <p>{formattedDate}</p>
-              <a
-                href="#date"
-                className="w-max bg-gold rounded-3xl text-night mt-2 flex flex-row items-center py-2 px-4 gap-2 text-sm"
-              >
-                <CalendarHeart height={16} width={16} />
-                Save the date
-              </a>
-            </div>
-
-            <div className="curved-edge bg-gold h-20 flex flex-col items-center justify-center text-center text-playwrite text-lg text-night">
-              <span data-aos="fade-down">We're Getting Married 💞</span>
-            </div>
-          </div>
-        </div>
+        <Heroes date={formattedDate} />
         {/* Opening */}
         <div className="min-h-screen w-full flex flex-col items-center p-4 my-40 text-night">
           <div data-aos="zoom-in-up">
@@ -228,7 +188,7 @@ function App() {
         {/* Date */}
         <div id="date" className="bg-gold gap-4 px-4 py-20 text-night">
           <div
-            className="flex flex-col justify-center items-center"
+            className="flex flex-col justify-center items-center gap-3"
             data-aos="zoom-out-down"
           >
             <p className="text-playwrite text-xl">Save The Date</p>
@@ -252,10 +212,15 @@ function App() {
                 Jl Serdang Baru 8 No. 26 RT 002 RW 005 Kel. Serdang Kec.
                 Kemayoran, Jakarta Pusat
               </p>
-              <Button className="w-max rounded-xl">
-                <MapPin />
+              <a
+                href="https://maps.app.goo.gl/SQ5XC6VzHTBhJ6j59"
+                target="_blank"
+                referrerPolicy="no-referrer"
+                className="w-max rounded-2xl bg-night text-eggshell flex flex-row items-center px-3 py-2 gap-2 text-sm "
+              >
+                <MapPin height={12} width={12} />
                 Lihat lokasi
-              </Button>
+              </a>
             </div>
             <div
               className="flex flex-col gap-2 justify-center items-center px-4"
@@ -269,10 +234,15 @@ function App() {
                 Dusun Kedung Uter No. 26 RT 002 RW 001 Desa Kendalrejo Kec.
                 Petarukan Kab. Pemalang
               </p>
-              <Button className="w-max rounded-xl">
-                <MapPin />
+              <a
+                href="https://maps.app.goo.gl/rhTaksdFwHuoSv6z5?g_st=aw"
+                target="_blank"
+                referrerPolicy="no-referrer"
+                className="w-max rounded-2xl bg-night text-eggshell flex flex-row items-center px-3 py-2 gap-2 text-sm "
+              >
+                <MapPin height={12} width={12} />
                 Lihat lokasi
-              </Button>
+              </a>
             </div>
           </div>
         </div>
@@ -286,41 +256,57 @@ function App() {
             </p>
           </div>
           <p className="mb-9">- QS. Az-Zariyat 49 -</p>
-          {IMAGE_ROW.map((item) => (
-            <img
-              src={item.src}
-              key={item.alt}
-              alt={'gallery' + item.alt}
-              className={`h-56 w-full rounded-lg mt-3`}
-            />
-          ))}
-          <div className="flex flex-row items-center justify-between">
-            <img
-              src={Height1}
-              alt="gallery-img-3"
-              className="h-64 w-[47.5%] rounded-lg mt-3 object-cover"
-              loading="lazy"
-            />
-            <img
-              src={Height2}
-              alt="gallery-img-3"
-              className="h-64 w-[47.5%] rounded-lg mt-3 object-cover"
-              loading="lazy"
-            />
-          </div>
-          <div className="flex flex-row items-center justify-between">
-            <img
-              src={Height3}
-              alt="gallery-img-3"
-              className="h-64 w-[47.5%] rounded-lg mt-3 object-cover"
-              loading="lazy"
-            />
-            <img
-              src={Height4}
-              alt="gallery-img-3"
-              className="h-64 w-[47.5%] rounded-lg mt-3 object-cover"
-              loading="lazy"
-            />
+          <Gallery />
+        </div>
+        {/* Our Story */}
+        <div className="flex flex-col items-center justify-center p-4 text-night my-20 px-4">
+          <p className="text-playwrite text-xl mb-12">Our Story</p>
+          <div className="bg-gold rounded-md flex flex-col items-center overflow-hidden">
+            <img src={OurStory} alt="our-story" />
+            <div className="flex flex-row">
+              <div className="flex flex-col px-4 py-8 gap-8 text-left w-3/4">
+                <div data-aos="fade-left">
+                  <p className="text-playwrite mb-2">Awal Bertemu</p>
+                  <p>Juli 2022</p>
+                  <p>
+                    Kami bertemu di salah satu lembaga pendidikan dimana kami
+                    sama-sama menjadi pengajar. Dalam beberapa kesempatan kami
+                    sering berkolaborasi pada kegiatan sekolah.
+                  </p>
+                </div>
+                <div data-aos="fade-right">
+                  <p className="text-playwrite mb-2">Menjalin Hubungan</p>
+                  <p>4 April 2024</p>
+                  <p>
+                    Kami sempat berhenti dalam berkomunikasi karena sudah
+                    ditempat kerja yang berbeda, hingga akhirnya kami mulai
+                    aktif berkomunikasi kembali setelah salah satu diantara kami
+                    mulai iseng replay Instagram story. Akhirnya obrolan itu
+                    berlanjut menjadi rasa cinta sampai akhirnya kami memutuskan
+                    untuk menjalin sebuah komitmen.
+                  </p>
+                </div>
+                <div data-aos="fade-left">
+                  <p className="text-playwrite mb-2">Lamaran</p>
+                  <p>2 November 2024</p>
+                  <p>
+                    Sebagai hadiah hari lahir Novita, Gunawan memberikan hadiah
+                    yang sangat spesial yaitu melamar Novita untuk menjadi calon
+                    istrinya.
+                  </p>
+                </div>
+                <div data-aos="fade-right">
+                  <p>19 Februari 2025</p>
+                  <p>
+                    insyaAllah kami akan menunaikan ibadah terpanjang dalam
+                    kehidupan yaitu janji suci pernikahan.
+                  </p>
+                </div>
+              </div>
+              <div className="bg-night text-gold w-1/4 flex items-center justify-center">
+                <p className="rotate-90 text-playwrite">Love Story</p>
+              </div>
+            </div>
           </div>
         </div>
         {/* Gift */}
@@ -388,17 +374,22 @@ function App() {
           <Button className="w-full mt-3">Kirim</Button>
         </div>
         {/* Closing */}
-        <div className="flex flex-col items-center justify-center px-4 py-20 text-night gap-3">
-          <div className="border-gold border-2 rounded-t-[64px] rounded-b-[64px] h-64 w-44 mt-6 overflow-hidden">
-            <img src={Closing} alt="closing image" />
+        <div className="flex flex-col items-center justify-center pb-20 text-night gap-3">
+          <div className="w-full overflow-hidden">
+            <img src={Closing} alt="closing image" className="object-contain" />
           </div>
-          <p className="text-sm mt-12">
-            Merupakan suatu kehormatan dan kebahagiaan bagi kami, apabila
-            Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu. Atas
-            kehadiran dan doa restunya, kami mengucapkan terima kasih.
-          </p>
-          <p className="text-playwrite">Wassalamu'alaikum Wr. Wb.</p>
-          <p className="text-playwrite text-xl">Gunawan & Novita</p>
+          <div
+            className="flex flex-col items-center px-4 gap-3"
+            data-aos="fade-down"
+          >
+            <p className="text-sm mt-12">
+              Merupakan suatu kehormatan dan kebahagiaan bagi kami, apabila
+              Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu. Atas
+              kehadiran dan doa restunya, kami mengucapkan terima kasih.
+            </p>
+            <p className="text-playwrite">Wassalamu'alaikum Wr. Wb.</p>
+            <p className="text-playwrite text-xl">Gunawan & Novita</p>
+          </div>
         </div>
         {/* Footer */}
         <div className="text-night py-10">
@@ -414,7 +405,7 @@ function App() {
           </span>
         </div>
         <div
-          className="bg-gold text-night p-2 rounded-full w-max shadow fixed bottom-8 right-8 flex items-center justify-center"
+          className="bg-gold text-night p-2 rounded-full w-max shadow fixed bottom-8 right-8 flex items-center justify-center z-50"
           role="button"
           onClick={() => setPlayed(!played)}
         >
