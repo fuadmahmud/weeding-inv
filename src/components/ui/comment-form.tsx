@@ -56,7 +56,9 @@ const CommentForm = (props: CommentFormProps) => {
 
   useEffect(() => {
     if (props.guest) {
-      form.reset();
+      form.reset({
+        name: props.guest.name,
+      });
     }
   }, [props.guest]);
 
