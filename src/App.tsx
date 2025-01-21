@@ -1,23 +1,22 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import './App.css';
 import { Button } from './components/ui/button';
-import { MailOpen, Instagram, MapPin, Gift, Play, Pause } from 'lucide-react';
+import {
+  MailOpen,
+  Instagram,
+  MapPin,
+  Gift,
+  Play,
+  Pause,
+  BadgeCheck,
+  Clock,
+} from 'lucide-react';
 import Braid from '@/assets/braid.webp';
 import Groom from '@/assets/groom.webp';
 import Closing from '@/assets/closing.jpg';
 import Card from './components/ui/card';
-import { format } from 'date-fns';
+import { format, formatDistanceToNowStrict } from 'date-fns';
 import { id } from 'date-fns/locale';
-import { Input } from './components/ui/input';
-import { Textarea } from './components/ui/textarea';
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from './components/ui/select';
 import BackgroundMusic from '@/assets/backsound.mp3';
 import Timer from './components/ui/timer';
 import AOS from 'aos';
@@ -25,6 +24,10 @@ import 'aos/dist/aos.css';
 import Gallery from './components/ui/gallery';
 import Heroes from './components/ui/heroes';
 import OurStory from '@/assets/our-story.webp';
+import supabase from './lib/supabase';
+import { PostgrestError, QueryData } from '@supabase/supabase-js';
+import { Tables } from './lib/types';
+import CommentForm from './components/ui/comment-form';
 
 const ACCOUNTS = [
   {
@@ -47,6 +50,13 @@ const ACCOUNTS = [
   },
 ];
 
+const queryComments = supabase
+  .from('comment')
+  .select()
+  .order('id', { ascending: false });
+
+type ResponseComments = QueryData<typeof queryComments>;
+
 function App() {
   const [isSliding, setSliding] = useState(false);
   const [openGift, setOpenGift] = useState(false);
@@ -57,6 +67,47 @@ function App() {
   const formattedDate = format(targetDate, 'EEEE dd MMMM yyyy', { locale: id });
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isTabActive, setIsTabActive] = useState(true);
+  const [comments, setComments] = useState<{
+    data: ResponseComments;
+    error: PostgrestError | null;
+  }>({
+    data: [],
+    error: null,
+  });
+  const [guest, setGuest] = useState<{
+    data: Tables<'invite'> | null;
+    error: PostgrestError | null;
+  }>({
+    data: null,
+    error: null,
+  });
+  const params = new URLSearchParams(location.search);
+  const slug = params.get('tamu');
+
+  const fetchComments = useCallback(async () => {
+    const { data, error } = await queryComments;
+    if (error) {
+      setComments({ data: [], error });
+    } else {
+      setComments({ data, error });
+    }
+  }, []);
+
+  const fetchGuest = useCallback(async () => {
+    if (slug) {
+      const { data, error } = await supabase
+        .from('invite')
+        .select()
+        .eq('slug', slug)
+        .single();
+
+      if (error) {
+        setGuest({ data, error });
+      } else {
+        setGuest({ data, error });
+      }
+    }
+  }, [slug]);
 
   const handleVisibilityChange = useCallback(() => {
     setIsTabActive(document.visibilityState === 'visible');
@@ -70,10 +121,17 @@ function App() {
     });
     AOS.refresh();
     document.addEventListener('visibilitychange', handleVisibilityChange);
+    fetchComments();
     return () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, []);
+
+  useEffect(() => {
+    if (slug) {
+      fetchGuest();
+    }
+  }, [slug]);
 
   useEffect(() => {
     if (!isTabActive) setPlayed(false);
@@ -98,7 +156,15 @@ function App() {
           <p>THE WEEDING OF</p>
           <p className="text-playwrite text-2xl">Gunawan & Novita</p>
           <p>Dear</p>
-          <p>Nama Undangan</p>
+          <p>
+            {guest.data
+              ? `${
+                  guest.data.salutation
+                    ? guest.data.salutation + ' ' + guest.data.name
+                    : guest.data.name
+                }`
+              : ''}
+          </p>
           <Button
             className="bg-gold text-night hover:text-gold"
             onClick={() => {
@@ -345,33 +411,42 @@ function App() {
           <p className="text-playwrite xl mb-12">Ucapkan Sesuatu</p>
           <div className="flex flex-row items-center justify-between">
             <div className="flex items-center justify-center bg-green-300 p-4 font-bold w-[45%] h-24 text-center rounded">
-              10
+              {comments.data.length
+                ? comments.data.filter((comment) => comment.rsvp).length
+                : 0}
               <br /> Hadir
             </div>
             <div className="flex items-center justify-center bg-red-300 p-4 font-bold w-[45%] h-24 text-center rounded">
-              1<br /> Tidak Hadir
+              {comments.data.length
+                ? comments.data.length -
+                  comments.data.filter((comment) => comment.rsvp).length
+                : 0}
+              <br /> Tidak Hadir
             </div>
           </div>
-          <div className="w-full flex flex-col gap-3 mt-4">
-            <Input placeholder="Nama" className="bg-eggshell" />
-            <Textarea
-              placeholder="Komentar"
-              maxLength={360}
-              className="bg-eggshell"
-            />
-            <Select>
-              <SelectTrigger className="bg-eggshell">
-                <SelectValue placeholder="Konfirmasi kehadiran" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem value="yes">Hadir</SelectItem>
-                  <SelectItem value="no">Tidak Hadir</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+          <CommentForm guest={guest.data} fetchComments={fetchComments} />
+          <div className="bg-eggshell mt-3 w-full flex flex-col items-start p-4 gap-4 overflow-y-auto">
+            {comments.data.map((comment) => {
+              return (
+                <div className="flex flex-col" key={comment.id}>
+                  <div className="flex flex-row items-center">
+                    <p className="font-bold">{comment.name}</p>
+                    {comment.valid && <BadgeCheck className="ml-2 h-4 w-4" />}
+                  </div>
+                  <p className="text-start">{comment.comment}</p>
+                  <div className="flex flex-row items-center text-sm">
+                    <Clock className="mr-2 h-3 w-3" />
+                    <p>
+                      {formatDistanceToNowStrict(comment.created_at, {
+                        locale: id,
+                        addSuffix: true,
+                      })}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
           </div>
-          <Button className="w-full mt-3">Kirim</Button>
         </div>
         {/* Closing */}
         <div className="flex flex-col items-center justify-center pb-20 text-night gap-3">
