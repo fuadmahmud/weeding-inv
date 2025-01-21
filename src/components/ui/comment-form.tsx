@@ -105,7 +105,7 @@ const CommentForm = (props: CommentFormProps) => {
             name="rsvp"
             render={({ field }) => (
               <FormItem>
-                <Select onValueChange={field.onChange} defaultValue="yes">
+                <Select onValueChange={field.onChange}>
                   <FormControl>
                     <SelectTrigger className="bg-eggshell">
                       <SelectValue placeholder="Konfirmasi kehadiran" />
