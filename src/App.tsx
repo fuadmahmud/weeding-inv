@@ -425,27 +425,31 @@ function App() {
             </div>
           </div>
           <CommentForm guest={guest.data} fetchComments={fetchComments} />
-          <div className="bg-eggshell mt-3 w-full flex flex-col items-start p-4 gap-4 overflow-y-auto">
-            {comments.data.map((comment) => {
-              return (
-                <div className="flex flex-col" key={comment.id}>
-                  <div className="flex flex-row items-center">
-                    <p className="font-bold">{comment.name}</p>
-                    {comment.valid && <BadgeCheck className="ml-2 h-4 w-4" />}
+          <div className="bg-eggshell mt-3 w-full flex flex-col items-start p-4 gap-4 overflow-y-auto h-96">
+            {comments.data.length ? (
+              comments.data.map((comment) => {
+                return (
+                  <div className="flex flex-col" key={comment.id}>
+                    <div className="flex flex-row items-center">
+                      <p className="font-bold">{comment.name}</p>
+                      {comment.valid && <BadgeCheck className="ml-2 h-4 w-4" />}
+                    </div>
+                    <p className="text-start">{comment.comment}</p>
+                    <div className="flex flex-row items-center text-sm">
+                      <Clock className="mr-2 h-3 w-3" />
+                      <p>
+                        {formatDistanceToNowStrict(comment.created_at, {
+                          locale: id,
+                          addSuffix: true,
+                        })}
+                      </p>
+                    </div>
                   </div>
-                  <p className="text-start">{comment.comment}</p>
-                  <div className="flex flex-row items-center text-sm">
-                    <Clock className="mr-2 h-3 w-3" />
-                    <p>
-                      {formatDistanceToNowStrict(comment.created_at, {
-                        locale: id,
-                        addSuffix: true,
-                      })}
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
+                );
+              })
+            ) : (
+              <p>Jadilah yang pertama untuk beri ucapan</p>
+            )}
           </div>
         </div>
         {/* Closing */}

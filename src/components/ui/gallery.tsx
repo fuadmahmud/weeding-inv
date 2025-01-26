@@ -67,12 +67,12 @@ export default function Gallery() {
         <CarouselContent>
           {IMAGE_ROW.map((item, index) => (
             <CarouselItem
-              className="basis-1/3 relative"
+              className="basis-1/3 relative overflow-hidden"
               key={item.alt}
               onClick={() => handleClickItem(index)}
             >
               {imgIndex === index ? (
-                <div className="h-full w-full bg-black/10 absolute" />
+                <div className="h-full w-full bg-black/50 absolute" />
               ) : null}
               <img src={item.src} alt={item.alt} />
             </CarouselItem>
