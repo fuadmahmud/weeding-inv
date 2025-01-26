@@ -90,7 +90,18 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
-      [_ in never]: never;
+      get_invite: {
+        Args: {
+          slug: string;
+        };
+        Returns: {
+          created_at: string;
+          id: number;
+          name: string;
+          salutation: string | null;
+          slug: string;
+        };
+      };
     };
     Enums: {
       [_ in never]: never;

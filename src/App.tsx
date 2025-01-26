@@ -95,11 +95,7 @@ function App() {
 
   const fetchGuest = useCallback(async () => {
     if (slug) {
-      const { data, error } = await supabase
-        .from('invite')
-        .select()
-        .eq('slug', slug)
-        .single();
+      const { data, error } = await supabase.rpc('get_invite', { slug });
 
       if (error) {
         setGuest({ data, error });
