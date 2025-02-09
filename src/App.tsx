@@ -70,9 +70,11 @@ function App() {
   const [comments, setComments] = useState<{
     data: ResponseComments;
     error: PostgrestError | null;
+    loading: boolean;
   }>({
     data: [],
     error: null,
+    loading: false,
   });
   const [guest, setGuest] = useState<{
     data: Tables<'invite'> | null;
@@ -85,11 +87,12 @@ function App() {
   const slug = params.get('tamu');
 
   const fetchComments = useCallback(async () => {
+    setComments({ ...comments, loading: true });
     const { data, error } = await queryComments;
     if (error) {
-      setComments({ data: [], error });
+      setComments({ data: [], error, loading: false });
     } else {
-      setComments({ data, error });
+      setComments({ data, error, loading: false });
     }
   }, []);
 
@@ -420,7 +423,11 @@ function App() {
               <br /> Tidak Hadir
             </div>
           </div>
-          <CommentForm guest={guest.data} fetchComments={fetchComments} />
+          <CommentForm
+            guest={guest.data}
+            fetchComments={fetchComments}
+            loading={comments.loading}
+          />
           <div className="bg-eggshell mt-3 w-full flex flex-col items-start p-4 gap-4 overflow-y-auto h-96">
             {comments.data.length ? (
               comments.data.map((comment) => {

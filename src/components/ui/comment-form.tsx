@@ -16,6 +16,7 @@ import { Button } from './button';
 import { Tables, TablesInsert } from '@/lib/types';
 import { useEffect } from 'react';
 import supabase from '@/lib/supabase';
+import { Loader2 } from 'lucide-react';
 
 const formSchema = z.object({
   name: z.string().min(5, { message: 'Mohon isi nama terlebih dahulu' }),
@@ -26,6 +27,7 @@ const formSchema = z.object({
 interface CommentFormProps {
   guest: Tables<'invite'> | null;
   fetchComments: () => void;
+  loading: boolean;
 }
 
 const CommentForm = (props: CommentFormProps) => {
@@ -123,7 +125,8 @@ const CommentForm = (props: CommentFormProps) => {
             )}
           />
         </div>
-        <Button className="w-full mt-3" type="submit">
+        <Button className="w-full mt-3" type="submit" disabled={props.loading}>
+          {props.loading && <Loader2 className="animate-spin" />}
           Kirim
         </Button>
       </form>
