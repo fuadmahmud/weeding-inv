@@ -63,8 +63,7 @@ function App() {
   const [played, setPlayed] = useState(false);
   const resepsiDate = new Date('2025-04-02');
   const targetDate =
-    new Date() > new Date('2025-02-19') ? resepsiDate : new Date('2025-02-19');
-  const formattedDate = format(targetDate, 'EEEE dd MMMM yyyy', { locale: id });
+    new Date() > new Date('2025-02-20') ? resepsiDate : new Date('2025-02-19');
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isTabActive, setIsTabActive] = useState(true);
   const [comments, setComments] = useState<{
@@ -183,7 +182,9 @@ function App() {
         `}
       >
         {/* Heroes */}
-        <Heroes date={formattedDate} />
+        <Heroes
+          date={format(targetDate, 'EEEE dd MMMM yyyy', { locale: id })}
+        />
         {/* Opening */}
         <div className="min-h-screen w-full flex flex-col items-center p-4 my-40 text-night">
           <div data-aos="zoom-in-up">
@@ -271,7 +272,11 @@ function App() {
           <div className="py-8 flex flex-col gap-4" data-aos="zoom-in">
             <div className="flex flex-col gap-2 justify-center items-center px-4">
               <p className="text-playwrite text-xl">Akad & Tasyakuran</p>
-              <p>{formattedDate}</p>
+              <p>
+                {format(new Date('2025-02-19'), 'EEEE dd MMMM yyyy', {
+                  locale: id,
+                })}
+              </p>
               <p className="text-sm">Pukul 12.00 - 17.00 WIB</p>
               <p className="text-xs">
                 Jl Serdang Baru 8 No. 26 RT 002 RW 005 Kel. Serdang Kec.
